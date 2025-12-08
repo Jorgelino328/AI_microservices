@@ -14,10 +14,8 @@ public class IntegratorApplication {
         SpringApplication.run(IntegratorApplication.class, args);
     }
 
-    // Bean for load-balanced WebClient
     @Bean
-    @LoadBalanced // Use LoadBalancer (Ribbon/LoadBalancerClient) to find "AI-SERVICE" in Eureka
-    public WebClient.Builder loadBalancedWebClientBuilder() {
+    public WebClient.Builder webClientBuilder() {
         return WebClient.builder();
     }
 }

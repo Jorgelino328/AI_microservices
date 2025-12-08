@@ -18,3 +18,7 @@ spring:
           uri: lb://SERVERLESS-SERVICE
           predicates:
             - Path=/uppercase/**
+        - id: integrator-service
+          uri: lb://INTEGRATOR-SERVICE
+          predicates:
+            - Path=/integrate/**
