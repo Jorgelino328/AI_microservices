@@ -1,15 +1,16 @@
 server:
-  port: 8081 # AI Service runs on 8081
+  port: 8081
 
 spring:
   ai:
     openai:
-      api-key: "YOUR_OPENAI_API_KEY_HERE" # Replace this!
+      # This tells Spring: "Look for an environment variable named OPENAI_API_KEY"
+      api-key: "${OPENAI_API_KEY}"
       chat:
         options:
           model: gpt-3.5-turbo
 
-# Resilience Configuration (Required for Grade)
+# Resilience Configuration
 resilience4j:
   circuitbreaker:
     instances:
