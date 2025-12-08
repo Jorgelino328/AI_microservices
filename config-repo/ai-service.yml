@@ -1,0 +1,21 @@
+server:
+  port: 8081 # AI Service runs on 8081
+
+spring:
+  ai:
+    openai:
+      api-key: "YOUR_OPENAI_API_KEY_HERE" # Replace this!
+      chat:
+        options:
+          model: gpt-3.5-turbo
+
+# Resilience Configuration (Required for Grade)
+resilience4j:
+  circuitbreaker:
+    instances:
+      aiService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
