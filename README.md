@@ -46,11 +46,11 @@ cd AI_microservices
 
 O AI Service requer uma API Key da OpenAI para funcionar. Siga os passos:
 
-1. **Navegue até o diretório do AI Service:**
+1. **Navegue até o diretório do AI Service**
 
-2. **Renomeie o arquivo `.env.example` para `.env`:**
+2. **Renomeie o arquivo `.env.example` para `.env`**
 
-3. **Edite o arquivo `.env` e adicione sua API Key da OpenAI:**
+3. **Edite o arquivo `.env` e adicione sua API Key da OpenAI**
 
 ## Como Executar
 
