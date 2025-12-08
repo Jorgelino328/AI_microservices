@@ -1,0 +1,13 @@
+server:
+  port: 8083 # Unique port for the Integrator Service
+
+# Resilience4j Configuration (Circuit Breaker)
+resilience4j:
+  circuitbreaker:
+    instances:
+      aiService: # This must match the name used in the Java code (circuitBreakerFactory.create("aiService"))
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
