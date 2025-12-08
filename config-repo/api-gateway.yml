@@ -13,3 +13,8 @@ spring:
           uri: lb://AI-SERVICE
           predicates:
             - Path=/ai/**
+
+        - id: serverless-service
+          uri: lb://SERVERLESS-SERVICE
+          predicates:
+            - Path=/uppercase/**
