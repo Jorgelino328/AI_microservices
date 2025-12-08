@@ -1,36 +1,35 @@
 package imd.ufrn.br.integrator_service.controller;
 
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class IntegratorController {
 
-    private final WebClient webClient; // Standard WebClient (not load balanced)
-    private final CircuitBreaker circuitBreaker;
+    private static final Logger logger = LoggerFactory.getLogger(IntegratorController.class);
+    private final WebClient webClient;
 
-    public IntegratorController(WebClient.Builder webClientBuilder, CircuitBreakerFactory circuitBreakerFactory) {
-        // We use a standard WebClient for external calls (no @LoadBalanced)
-        this.webClient = WebClient.builder().baseUrl("https://api.open-meteo.com").build();
-        this.circuitBreaker = circuitBreakerFactory.create("externalService");
+    // We inject a standard WebClient builder (configured in Main class)
+    public IntegratorController(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("https://api.open-meteo.com").build();
     }
 
     @GetMapping("/integrate/weather")
-    public String getExternalData(@RequestParam(defaultValue = "-5.79") double lat,
-                                  @RequestParam(defaultValue = "-35.21") double lon) { // Default: Natal, RN
+    @CircuitBreaker(name = "externalService", fallbackMethod = "fallbackResponse")
+    @Retry(name = "externalService") // Retry failed requests automatically
+    public Mono<String> getExternalData(@RequestParam(defaultValue = "-5.79") double lat,
+                                        @RequestParam(defaultValue = "-35.21") double lon) {
 
-        return circuitBreaker.run(
-                () -> callThirdPartyApi(lat, lon),
-                throwable -> fallbackMethod(throwable)
-        );
-    }
+        logger.info("Calling External API (OpenMeteo) for Lat: {}, Lon: {}", lat, lon);
 
-    private String callThirdPartyApi(double lat, double lon) {
-        // Calls the Real Third-Party Weather API
+        // PRODUCTION IMPLEMENTATION: Calls the real public API
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/forecast")
@@ -39,12 +38,12 @@ public class IntegratorController {
                         .queryParam("current_weather", "true")
                         .build())
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToMono(String.class);
     }
 
-    private String fallbackMethod(Throwable t) {
-        // This executes when the External API is down or slow (Circuit Breaker Open)
-        return "{\"fallback\": true, \"message\": \"External System Unavailable. Returning cached/default data.\", \"error\": \"" + t.getMessage() + "\"}";
+    // Fallback method for Resilience (Circuit Breaker Open or Timeout)
+    public Mono<String> fallbackResponse(double lat, double lon, Throwable t) {
+        logger.error("External System Failed: {}", t.getMessage());
+        return Mono.just("{\"fallback\": true, \"message\": \"External System (OpenMeteo) is unavailable.\", \"reason\": \"" + t.getMessage() + "\"}");
     }
 }
