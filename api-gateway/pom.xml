@@ -28,14 +28,24 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-gateway-dependencies</artifactId>
+                <version>5.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-            <version>4.3.2</version>
+            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

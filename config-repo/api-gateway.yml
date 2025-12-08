@@ -4,25 +4,27 @@ server:
 spring:
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      routes:
-        # Route 1: AI Service
-        - id: ai-service
-          uri: lb://AI-SERVICE
-          predicates:
-            - Path=/ai/**
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            # Route 1: AI Service
+            - id: ai-service
+              uri: lb://AI-SERVICE
+              predicates:
+                - Path=/ai/**
 
-        # Route 2: Serverless Service
-        - id: serverless-service
-          uri: lb://SERVERLESS-SERVICE
-          predicates:
-            - Path=/uppercase/**
+            # Route 2: Serverless Service
+            - id: serverless-service
+              uri: lb://SERVERLESS-SERVICE
+              predicates:
+                - Path=/uppercase/**
 
-        # Route 3: Integrator Service (New)
-        - id: integrator-service
-          uri: lb://INTEGRATOR-SERVICE
-          predicates:
-            - Path=/integrate/**
+            # Route 3: Integrator Service (New)
+            - id: integrator-service
+              uri: lb://INTEGRATOR-SERVICE
+              predicates:
+                - Path=/integrate/**

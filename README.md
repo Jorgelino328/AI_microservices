@@ -86,5 +86,3 @@ mvn spring-boot:run
 cd serverless-service
 mvn spring-boot:run
 ```
-
-
