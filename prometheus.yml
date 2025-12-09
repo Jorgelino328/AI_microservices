@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 2s # Scrape very often for real-time demo feeling
+
+scrape_configs:
+  - job_name: 'spring-microservices'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets:
+          # API Gateway
+          - '192.168.0.5:8080'
+          # AI Service
+          - '192.168.0.5:8081'
+          # Serverless Service
+          - '192.168.0.5:8082'
+          # Integrator Service
+          - '192.168.0.5:8083'
