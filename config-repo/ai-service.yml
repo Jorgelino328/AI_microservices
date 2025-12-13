@@ -4,13 +4,11 @@ server:
 spring:
   ai:
     openai:
-      # This tells Spring: "Look for an environment variable named OPENAI_API_KEY"
       api-key: "${OPENAI_API_KEY}"
       chat:
         options:
           model: gpt-3.5-turbo
 
-# Resilience Configuration
 resilience4j:
   circuitbreaker:
     instances:

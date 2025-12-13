@@ -1,5 +1,5 @@
 global:
-  scrape_interval: 2s # Scrape very often for real-time demo feeling
+  scrape_interval: 2s
 
 scrape_configs:
   - job_name: 'spring-microservices'

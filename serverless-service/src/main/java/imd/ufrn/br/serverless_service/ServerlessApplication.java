@@ -12,8 +12,6 @@ public class ServerlessApplication {
         SpringApplication.run(ServerlessApplication.class, args);
     }
 
-    // This Bean IS the Serverless Function
-    // It maps automatically to the endpoint /uppercase
     @Bean
     public Function<String, String> uppercase() {
         return message -> {
