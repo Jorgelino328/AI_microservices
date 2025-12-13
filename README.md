@@ -30,6 +30,7 @@ O projeto consiste em 6 microsserviços integrados que demonstram uma arquitetur
 
 - Java 17 ou superior
 - Maven 3.6+
+- Docker e Docker Compose
 - Conta OpenAI com API Key
 - Git
 
@@ -51,6 +52,14 @@ O AI Service requer uma API Key da OpenAI para funcionar. Siga os passos:
 2. **Renomeie o arquivo `.env.example` para `.env`**
 
 3. **Edite o arquivo `.env` e adicione sua API Key da OpenAI**
+
+### 3. Iniciar Serviços Docker
+
+```bash
+docker compose up -d
+```
+
+Isso iniciará Zipkin, Prometheus e Grafana para rastreamento e monitoramento.
 
 ## Como Executar
 
